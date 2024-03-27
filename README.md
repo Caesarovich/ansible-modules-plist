@@ -5,13 +5,10 @@ This is an [Ansible](http://www.ansible.com/) module for creating and manipulati
 To install this module copy the `library` folder to the location of your playlist or role. The script makes use of [biplist](https://github.com/wooster/biplist) so make sure to install it on the targeted system.
 
 ```yaml
-- name: Install pip
-  easy_install: name=pip
-  sudo: yes
-
 - name: Install python module dependencies
-  pip: name=biplist
-  sudo: yes
+  become: true  # If required
+  ansible.builtin.pip:
+    name: biplist
 ```
 
 ## Usage
