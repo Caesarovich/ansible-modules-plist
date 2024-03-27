@@ -55,3 +55,7 @@ $ ./run.sh
 
 ## License
 This module is released under the [MIT License](https://github.com/mtneug/ansible-modules-plist/blob/master/LICENSE.md).
+
+## Note
+I forked this module from the original since it is deprecated and needed some quick fixes. I am not a Python guy at all so I can't guarantee that it is now 100% functional.
+I am not sure if I will maintain this module any further than my current needs, so feel free to open PRs/Issues if you need anything more. 
