@@ -41,7 +41,9 @@ plist_file:
 '''
 
 import sys
-import collections
+import collections.abc as collections
+
+
 
 try:
     import biplist
@@ -54,26 +56,31 @@ def do_plist(module, filename, value, key=None):
     changed = False
 
     try:
-        f = open(filename)
+        f = open(filename, 'rb')
         plist = biplist.readPlist(f)
     except:
         plist = dict()
+    finally:
+        f.close()
+    
 
     changed = not equal(plist, working_value)
 
     if changed and not module.check_mode:
         try:
             update(plist, working_value)
-            f = open(filename, 'w')
+            f = open(filename, 'wb')
             biplist.writePlist(plist, f)
         except Exception as e:
             module.fail_json(msg="Can't change %s" % filename, error=str(e))
+        finally:
+            f.close()
 
     return changed
 
 def equal(slave, master):
     if isinstance(slave, collections.Mapping) and isinstance(master, collections.Mapping):
-        for k, v in master.iteritems():
+        for k, v in master.items():
             if not equal(slave.get(k), v):
                 return False
     else:
@@ -83,7 +90,7 @@ def equal(slave, master):
 
 def update(d, u):
     """Taken from http://stackoverflow.com/a/3233356"""
-    for k, v in u.iteritems():
+    for k, v in u.items():
         if isinstance(v, collections.Mapping):
             r = update(d.get(k, {}), v)
             d[k] = r
